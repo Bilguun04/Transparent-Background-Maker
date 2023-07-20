@@ -1,39 +1,43 @@
 from PIL import Image
-import os
 
-def make_background_transparent(image_name):
-    # Get the full path of the image file based on the script's current working directory
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    image_path = os.path.join(current_directory, image_name)
+pieces = ['R', 'N', 'B', 'Q', 'K', 'P']
 
-    # Open the image using PIL
-    image = Image.open(image_path)
+def transparent_to_white(image_location):
+    img = Image.open(image_location)
+    datas = img.getdata()
+    new_data = []
+    for data in datas:
+        if data == (255, 255, 255, 0):
+            new_data.append((255, 255, 255))
+        else:
+            new_data.append(data)
+    new_image = Image.new('RGB', img.size)
+    new_image.putdata(new_data)
+    new_image.save(image_location)
 
-    # Convert the image to RGBA mode
-    image = image.convert("RGBA")
+def black_to_transparent(image_location):
+    img = Image.open(image_location)
+    img.convert('RGBA')
+    datas = img.getdata()
+    new_data = []
+    for data in datas:
+        if data == (0, 0, 0):
+            new_data.append((0, 0, 0, 0))
+        else:
+            new_data.append(data)
+    new_image = Image.new('RGBA', img.size)
+    new_image.putdata(new_data)
+    new_image.save(image_location)
 
-    # Load pixel data using the load() method
-    pixels = image.load()
-
-    # Get image dimensions
-    width, height = image.size
-
-    # Create a new image with RGBA mode and transparent background
-    transparent_image = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-
-    # Load pixel data for the new image
-    transparent_pixels = transparent_image.load()
-
-    # Loop through each pixel of the original image
-    for x in range(width):
-        for y in range(height):
-            # Get the RGBA values of the current pixel
-            r, g, b, a = pixels[x, y]
-
-            # Set the pixel data in the new image
-            transparent_pixels[x, y] = (r, g, b, a)
-
-    # Save the transparent image
-    transparent_image.save("transparent_" + image_name, format="PNG")
-
-make_background_transparent(input())
+def white_to_black(image_location):
+    img = Image.open(image_location)
+    datas = img.getdata()
+    new_data = []
+    for data in datas:
+        if data[3] == 0:
+            new_data.append(data)
+        else:
+            new_data.append((0, 0, 0))
+    new_image = Image.new('RGBA', img.size)
+    new_image.putdata(new_data)
+    new_image.save(image_location)
