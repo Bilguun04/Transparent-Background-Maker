@@ -1,7 +1,5 @@
 from PIL import Image
 
-pieces = ['R', 'N', 'B', 'Q', 'K', 'P']
-
 def transparent_to_white(image_location):
     img = Image.open(image_location)
     datas = img.getdata()
