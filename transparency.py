@@ -1,6 +1,11 @@
 from PIL import Image
 
 def transparent_to_white(image_location):
+    '''
+    It takes image name, returns nothing and replaces old picture with the new one (with same name).
+    This function does tranforms picture from transparent to normal picture.
+    (Make transparent background to white color)
+    '''
     img = Image.open(image_location)
     datas = img.getdata()
     new_data = []
@@ -14,6 +19,10 @@ def transparent_to_white(image_location):
     new_image.save(image_location)
 
 def black_to_transparent(image_location):
+    '''
+    This function takes image name and returns nothing.
+    This function transforms picture with black background to transparent. 
+    '''
     img = Image.open(image_location)
     img.convert('RGBA')
     datas = img.getdata()
@@ -28,6 +37,11 @@ def black_to_transparent(image_location):
     new_image.save(image_location)
 
 def white_to_black(image_location):
+    '''
+    It take only image name and returns nothing.
+    This function reverses white color in the picture to black.
+    And replaces old picture with the new one.
+    '''
     img = Image.open(image_location)
     datas = img.getdata()
     new_data = []
